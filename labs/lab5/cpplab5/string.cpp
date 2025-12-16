@@ -5,6 +5,8 @@
 #include <fstream>
 #include <sstream>
 #include "Source.h"
+#include <locale>
+
 
 using namespace std;
 
@@ -21,9 +23,11 @@ void random_str(string& random_string) {
         random_string += russian_alphabet_upper[random_index];
     }
 }
-void console_str(string& console_str){
+void console_str(string& console_str) {
+    cin.ignore();
+	setlocale(LC_ALL, "rus");
     cout << "Введите строку: ";
-    cin >> console_str;
+    getline(cin, console_str);
 }
 void file_str(string& file_str)
 {
@@ -59,7 +63,6 @@ void task1(string stroka) {
 void task2(string stroka) {
     char asi35 = 35, asi33 = 33;
     char probel = ' ';
-    cout << asi35 << endl;
     for (char &c : stroka) {
         if (c == probel)
             c = asi35;
@@ -135,7 +138,7 @@ void task5(string stroka) {
 
     string bin;
     for (char c : stroka) {
-        if (isspace(static_cast<unsigned char>(c))) continue; // пропускаем пробелы внутри строки
+        if (isspace(static_cast<unsigned char>(c))) continue; 
         int val = -1;
         if (c >= '0' && c <= '9') val = c - '0';
         else {
@@ -157,4 +160,63 @@ void task5(string stroka) {
     else {
         cout << bin.substr(pos) << "\n";
     }
+}
+
+void task6(string stroka) {
+    cout << "Выберите уровень сложности пароля:\n";
+    cout << "1) Лёгкий  — 8 символов (только строчные буквы)\n";
+    cout << "2) Средний — 12 символов (строчные+прописные+цифры)\n";
+    cout << "3) Сложный — 16 символов (строчные+прописные+цифры+символы)\n";
+    int level;
+    if (!(cin >> level)) {
+        cout << "Неверный ввод\n";
+        cin.clear();
+        cin.ignore(10000, '\n');
+        return;
+    }
+
+    int length = 0;
+    string charset;
+    const string lowers = "abcdefghijklmnopqrstuvwxyz";
+    const string uppers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const string digits = "0123456789";
+    const string symbols = "!@#$%^&*()-_=+[]{};:,.<>?/\\|";
+
+    switch (level) {
+    case 1:
+        length = 8;
+        charset = lowers;
+        break;
+    case 2:
+        length = 12;
+        charset = lowers + uppers + digits;
+        break;
+    case 3:
+        length = 16;
+        charset = lowers + uppers + digits + symbols;
+        break;
+    default:
+        cout << "Неверный уровень сложности.\n";
+        return;
+    }
+
+    if (charset.empty()) {
+        cout << "Ошибка: пустой набор символов.\n";
+        return;
+    }
+
+    // Инициализация генератора случайных чисел
+    string password;
+    password.reserve(length);
+    int charsetSize = static_cast<int>(charset.length());
+    for (int i = 0; i < length; ++i) {
+        int idx = rand() % charsetSize;
+        password += charset[idx];
+    }
+
+    cout << "Сгенерированный пароль: " << password << "\n";
+}
+
+void task7(string stroka) {
+
 }

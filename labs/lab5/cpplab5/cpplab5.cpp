@@ -34,7 +34,7 @@ int main() {
 	}
 	if (n != 1 && n != 2 && n != 3)
 		return 1;
-	cout << "Введите номер задания:\n 1) AAA\n 2) ASCII\n 3) триады\n 4) уникальные строчки\n 5)Из 16-ричной в 2-ичную";
+	cout << "Введите номер задания:\n 1) AAA\n 2) ASCII\n 3) триады\n 4) уникальные строчки\n 5)Из 16-ричной в 2-ичную\n 6) генерация пароля\n";
 	int task;
 	cin >> task;
 	switch (task) {
@@ -56,6 +56,10 @@ int main() {
 	}
 	case 5: {
 		task5(stroka);
+		break;
+	}
+	case 6: {
+		task6(stroka);
 		break;
 	}
 	}
