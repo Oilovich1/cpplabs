@@ -118,7 +118,6 @@ bool tryParseInt(const std::string& s, long long& out) {
 
 void task3(string stroka) {
     long long num;
-    tryParseInt(stroka, num);
     if (!tryParseInt(stroka, num)) {
         cout << "В строке не число";
         return;
