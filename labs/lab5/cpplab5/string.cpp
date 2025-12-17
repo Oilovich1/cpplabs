@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include <cstdlib> // Для rand() и srand()
-#include <ctime>   // Для time()
+#include <cstdlib> 
+#include <ctime> 
 #include <fstream>
 #include <sstream>
 #include "Source.h"
@@ -127,7 +127,7 @@ void task3(string stroka) {
 
     if (digits[0] == '-') {
         isNegative = true;
-        digits = digits.substr(1);  // Убираем минус
+        digits = digits.substr(1);
     }
     int count = 0;
     string formated = "";
