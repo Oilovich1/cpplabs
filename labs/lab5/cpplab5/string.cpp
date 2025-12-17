@@ -5,10 +5,17 @@
 #include <fstream>
 #include <sstream>
 #include "Source.h"
+#include <Windows.h>
 #include <locale>
 
 
 using namespace std;
+
+void setup_console() {
+    SetConsoleCP(1251);      
+    SetConsoleOutputCP(1251); 
+    setlocale(LC_ALL, "Russian");
+}
 
 void random_str(string& random_string) {
     srand(static_cast<unsigned int>(time(0)));
@@ -17,20 +24,37 @@ void random_str(string& random_string) {
     cout << "Введите кол-во символов\n";
     cin >> length;
     string russian_alphabet_upper = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ ";
-
-    for (int i = 0; i < length; ++i) {
-        int random_index = rand() % russian_alphabet_upper.length();
-        random_string += russian_alphabet_upper[random_index];
+    string english_alphabet_upper = "QWERTYUIOPASDFGHJKLZXCVBNM ";
+    int choise;
+    cout << "Выберете алфавит: \n 1)русский\n2)английский";
+    cin >> choise;
+    switch (choise) {
+    case 1: {
+        for (int i = 0; i < length; ++i) {
+            int random_index = rand() % russian_alphabet_upper.length();
+            random_string += russian_alphabet_upper[random_index];
+        }
+        break;
+    }
+    case 2: {
+        for (int i = 0; i < length; ++i) {
+            int random_index = rand() % english_alphabet_upper.length();
+            random_string += english_alphabet_upper[random_index];
+        }
+        break;
+    }
+    default:
+        cout << "Неправильный выбор алфавита";
+        return;
     }
 }
 void console_str(string& console_str) {
     cin.ignore();
-	setlocale(LC_ALL, "rus");
+
     cout << "Введите строку: ";
     getline(cin, console_str);
 }
-void file_str(string& file_str)
-{
+void file_str(string& file_str){
     cout << "Введите название файла: ";
     string name;
     cin >> name;
@@ -44,6 +68,7 @@ void file_str(string& file_str)
 void task1(string stroka) {
     char searsh_a = 'А';
     char reset = ' ';
+    stroka += ' ';
     int count_a = 0, count_word = 0;
     for (char c : stroka) {
         if (c == searsh_a)
@@ -71,16 +96,32 @@ void task2(string stroka) {
     cout << stroka;
 }
 
+bool tryParseInt(const std::string& s, long long& out) {
+    if (s.empty()) return false;
+
+    std::string trimmed;
+    size_t start = s.find_first_not_of(" \t\r\n");
+    if (start == std::string::npos) return false;
+    size_t end = s.find_last_not_of(" \t\r\n");
+    trimmed = s.substr(start, end - start + 1);
+
+    std::istringstream iss(trimmed);
+    long long num;
+    char leftover;
+
+    if (iss >> num && !(iss >> leftover)) { // успешно прочитано число, и больше ничего нет
+        out = num;
+        return true;
+    }
+    return false;
+}
+
 void task3(string stroka) {
-    int num;
-    while (true) {
-        istringstream iss(stroka);
-        if (iss >> num && iss.eof()) {
-            break;
-        }
-        cout << "Ошибка: введено не целое число. Попробуйте снова.\n";
-        cout << "Введите целое число: ";
-        getline(cin, stroka);
+    long long num;
+    tryParseInt(stroka, num);
+    if (!tryParseInt(stroka, num)) {
+        cout << "В строке не число";
+        return;
     }
     bool isNegative = false;
     string digits = stroka;
