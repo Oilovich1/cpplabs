@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <vector>
 #include <algorithm>
+#include <cctype>
 using namespace std;
 
 void setup_console() {
@@ -16,6 +17,7 @@ void setup_console() {
     setlocale(LC_ALL, "Russian");
 }
 
+// Задача 1: Фитнесс центр
 // Структура для хранения информации о клиенте
 struct ClientRecord {
     int month;      // Номер месяца
@@ -82,6 +84,8 @@ void runFitnessCenterTask() {
     cout << "Год: " << maxRecord.year << endl;
     cout << "Месяц: " << maxRecord.month << endl;
 }
+
+// Задача 2: Начальная школа
 
 union StudentData {
     short readingSpeed;     // для 1-го класса (слов в минуту)
@@ -245,4 +249,239 @@ void runStudentTask() {
         cout << line << "\n";
     }
     read_file.close();
+}
+
+// ЗАДАЧА 3: Работа с книгами
+
+// Структура для книги
+struct Book {
+    string title;
+    string author;
+    int year;
+};
+
+vector<Book> library; // глобальный вектор для хранения книг
+
+// Функция для добавления новой книги
+void addBook() {
+    Book newBook;
+    cout << "Введите название книги: ";
+    cin.ignore();
+    getline(cin, newBook.title);
+    cout << "Введите автора: ";
+    getline(cin, newBook.author);
+    cout << "Введите год издания: ";
+    while (!(cin >> newBook.year) || newBook.year < 0) {
+        cout << "Ошибка: введите положительный год. Повторите: ";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+    library.push_back(newBook);
+    cout << "Книга добавлена!\n";
+}
+
+// Функция для вывода информации о книге по индексу
+void displayBook(int index) {
+    if (index >= 0 && index < static_cast<int>(library.size())) {
+        const auto& book = library[index];
+        cout << "Название: " << book.title << "\n";
+        cout << "Автор: " << book.author << "\n";
+        cout << "Год: " << book.year << "\n";
+    }
+    else {
+        cout << "Ошибка: некорректный индекс.\n";
+    }
+}
+
+// Функция для поиска книги по автору
+void searchByAuthor() {
+    string author;
+    cout << "Введите имя автора для поиска: ";
+    cin.ignore();
+    getline(cin, author);
+
+    bool found = false;
+    for (size_t i = 0; i < library.size(); ++i) {
+        if (library[i].author.find(author) != string::npos) {
+            cout << "\nКнига #" << (i + 1) << ":\n";
+            displayBook(i);
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "Книги этого автора не найдены.\n";
+    }
+}
+
+// Функция для поиска книг по частичному совпадению заголовка
+void searchByTitle() {
+    string titlePart;
+    cout << "Введите часть названия для поиска: ";
+    cin.ignore();
+    getline(cin, titlePart);
+
+    // Приведем часть названия к нижнему регистру для нечувствительного поиска
+    transform(titlePart.begin(), titlePart.end(), titlePart.begin(), ::tolower);
+
+    bool found = false;
+    for (size_t i = 0; i < library.size(); ++i) {
+        string lowerTitle = library[i].title;
+        transform(lowerTitle.begin(), lowerTitle.end(), lowerTitle.begin(), ::tolower);
+        if (lowerTitle.find(titlePart) != string::npos) {
+            cout << "\nКнига #" << (i + 1) << ":\n";
+            displayBook(i);
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "Книги с таким названием не найдены.\n";
+    }
+}
+
+// Функция для редактирования книги
+void editBook() {
+    if (library.empty()) {
+        cout << "Библиотека пуста.\n";
+        return;
+    }
+
+    cout << "Всего книг: " << library.size() << "\n";
+    int index;
+    cout << "Введите номер книги для редактирования (1-" << library.size() << "): ";
+    cin >> index;
+    --index; // преобразуем к 0-based
+
+    if (index >= 0 && index < static_cast<int>(library.size())) {
+        cout << "Текущая информация:\n";
+        displayBook(index);
+
+        cout << "\nВведите новое название книги (нажмите Enter, чтобы оставить без изменений): ";
+        cin.ignore();
+        string newTitle;
+        getline(cin, newTitle);
+        if (!newTitle.empty()) {
+            library[index].title = newTitle;
+        }
+
+        cout << "Введите нового автора (нажмите Enter, чтобы оставить без изменений): ";
+        string newAuthor;
+        getline(cin, newAuthor);
+        if (!newAuthor.empty()) {
+            library[index].author = newAuthor;
+        }
+
+        cout << "Введите новый год издания (нажмите Enter, чтобы оставить без изменений): ";
+        string yearStr;
+        getline(cin, yearStr);
+        if (!yearStr.empty()) {
+            try {
+                int newYear = stoi(yearStr);
+                if (newYear >= 0) {
+                    library[index].year = newYear;
+                }
+                else {
+                    cout << "Ошибка: год не может быть отрицательным. Поле оставлено без изменений.\n";
+                }
+            }
+            catch (...) {
+                cout << "Ошибка: введено некорректное значение. Поле оставлено без изменений.\n";
+            }
+        }
+
+        cout << "Книга обновлена!\n";
+    }
+    else {
+        cout << "Ошибка: некорректный номер книги.\n";
+    }
+}
+
+// Функция для удаления книги
+void deleteBook() {
+    if (library.empty()) {
+        cout << "Библиотека пуста.\n";
+        return;
+    }
+
+    cout << "Всего книг: " << library.size() << "\n";
+    int index;
+    cout << "Введите номер книги для удаления (1-" << library.size() << "): ";
+    cin >> index;
+    --index; // преобразуем к 0-based
+
+    if (index >= 0 && index < static_cast<int>(library.size())) {
+        cout << "Вы собираетесь удалить следующую книгу:\n";
+        displayBook(index);
+        char confirm;
+        cout << "Подтвердите удаление (y/n): ";
+        cin >> confirm;
+        if (confirm == 'y' || confirm == 'Y') {
+            library.erase(library.begin() + index);
+            cout << "Книга удалена.\n";
+        }
+        else {
+            cout << "Удаление отменено.\n";
+        }
+    }
+    else {
+        cout << "Ошибка: некорректный номер книги.\n";
+    }
+}
+
+// Функция для вывода всех книг
+void listAllBooks() {
+    if (library.empty()) {
+        cout << "Библиотека пуста.\n";
+        return;
+    }
+
+    cout << "\n=== Все книги в библиотеке ===\n";
+    for (size_t i = 0; i < library.size(); ++i) {
+        cout << "\nКнига #" << (i + 1) << ":\n";
+        displayBook(i);
+    }
+}
+
+void runLibraryTask() {
+    cout << "\nЗадача: Работа с книгами\n";
+
+    int choice;
+    do {
+        cout << "\nМеню:\n";
+        cout << "1. Добавить книгу\n";
+        cout << "2. Просмотреть все книги\n";
+        cout << "3. Найти по автору\n";
+        cout << "4. Найти по части названия\n";
+        cout << "5. Редактировать книгу\n";
+        cout << "6. Удалить книгу\n";
+        cout << "0. Назад\n";
+        cout << "Выберите действие: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            addBook();
+            break;
+        case 2:
+            listAllBooks();
+            break;
+        case 3:
+            searchByAuthor();
+            break;
+        case 4:
+            searchByTitle();
+            break;
+        case 5:
+            editBook();
+            break;
+        case 6:
+            deleteBook();
+            break;
+        case 0:
+            cout << "Возврат в главное меню.\n";
+            break;
+        default:
+            cout << "Некорректный выбор.\n";
+            break;
+        }
+    } while (choice != 0);
 }

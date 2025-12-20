@@ -9,11 +9,12 @@ void runFitnessCenterTask();
 
 // Функция для выбора задачи
 void showMenu() {
-    cout << "\n=== Меню выбора задач ===\n";
+    cout << "=== Меню выбора задач ===\n";
     cout << "1. Фитнес-центр\n";
     cout << "2. Ученики младшей школы\n";
+    cout << "3. Работа с книгами\n";
     cout << "0. Выход\n";
-    cout << "Выберите задачу (0-2): ";
+    cout << "Выберите задачу (0-3): ";
 }
 
 int main() {
@@ -32,7 +33,10 @@ int main() {
             break;
         case 2:
             runStudentTask();
-            break;  
+            break;
+        case 3:
+            runLibraryTask();
+            break;
         case 0:
             cout << "Выход из программы.\n";
             return 0;
