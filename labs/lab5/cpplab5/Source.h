@@ -11,5 +11,5 @@ void task2(string stroka);
 void task3(string stroka);
 void task4(string stroka);
 void task5(string stroka);
-void task6(string stroka);
-void task7(string stroka);
+void task6();
+void task7();

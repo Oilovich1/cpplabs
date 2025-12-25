@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include <cstdlib> 
 #include <ctime> 
@@ -7,6 +7,8 @@
 #include "Source.h"
 #include <Windows.h>
 #include <locale>
+#include <vector>
+#include <cctype>
 
 
 using namespace std;
@@ -21,12 +23,12 @@ void random_str(string& random_string) {
     srand(static_cast<unsigned int>(time(0)));
 
     int length;
-    cout << "������� ���-�� ��������\n";
+    cout << "Введите кол-во символов\n";
     cin >> length;
-    string russian_alphabet_upper = "�����Ũ�������������������������� ";
+    string russian_alphabet_upper = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ ";
     string english_alphabet_upper = "QWERTYUIOPASDFGHJKLZXCVBNM ";
     int choise;
-    cout << "�������� �������: \n 1)�������\n2)����������";
+    cout << "Выберете алфавит: \n 1)русский\n2)английский";
     cin >> choise;
     switch (choise) {
     case 1: {
@@ -44,18 +46,18 @@ void random_str(string& random_string) {
         break;
     }
     default:
-        cout << "������������ ����� ��������";
+        cout << "Неправильный выбор алфавита";
         return;
     }
 }
 void console_str(string& console_str) {
     cin.ignore();
 
-    cout << "������� ������: ";
+    cout << "Введите строку: ";
     getline(cin, console_str);
 }
 void file_str(string& file_str){
-    cout << "������� �������� �����: ";
+    cout << "Введите название файла: ";
     string name;
     cin >> name;
     ifstream file(name);
@@ -66,7 +68,7 @@ void file_str(string& file_str){
 }
 
 void task1(string stroka) {
-    char searsh_a = '�';
+    char searsh_a = 'А';
     char reset = ' ';
     stroka += ' ';
     int count_a = 0, count_word = 0;
@@ -109,7 +111,7 @@ bool tryParseInt(const std::string& s, long long& out) {
     long long num;
     char leftover;
 
-    if (iss >> num && !(iss >> leftover)) { // ������� ��������� �����, � ������ ������ ���
+    if (iss >> num && !(iss >> leftover)) { // успешно прочитано число, и больше ничего нет
         out = num;
         return true;
     }
@@ -119,7 +121,7 @@ bool tryParseInt(const std::string& s, long long& out) {
 void task3(string stroka) {
     long long num;
     if (!tryParseInt(stroka, num)) {
-        cout << "� ������ �� �����";
+        cout << "В строке не число";
         return;
     }
     bool isNegative = false;
@@ -141,7 +143,7 @@ void task3(string stroka) {
     if (isNegative) {
         formated = "-" + formated;
     }
-    cout << "������ �����:\n";
+    cout << "Триады числа:\n";
     cout << formated;
 }
 
@@ -160,12 +162,12 @@ void task4(string stroka) {
 			result2 += ' ';
         }
     }
-    cout << "���������� �������: " << result2;
+    cout << "Уникальные строчки: " << result2;
 }
 
 void task5(string stroka) {
     if (stroka.empty()) {
-        cout << "������: ������ ������.\n";
+        cout << "Ошибка: пустая строка.\n";
         return;
     }
 
@@ -186,13 +188,13 @@ void task5(string stroka) {
             if (up >= 'A' && up <= 'F') val = 10 + (up - 'A');
         }
         if (val == -1) {
-            cout << "������: ������������ ������ � ����������������� �����: '" << c << "'\n";
+            cout << "Ошибка: недопустимый символ в шестнадцатеричном числе: '" << c << "'\n";
             return;
         }
         bin += hex_map[val];
     }
 
-    // ������ ������� ���� (�������� ���� �� ���� ������)
+    // Убрать ведущие нули (оставить хотя бы один символ)
     size_t pos = bin.find_first_not_of('0');
     if (pos == string::npos) {
         cout << "0\n";
@@ -202,14 +204,14 @@ void task5(string stroka) {
     }
 }
 
-void task6(string stroka) {
-    cout << "�������� ������� ��������� ������:\n";
-    cout << "1) ˸����  � 8 �������� (������ �������� �����)\n";
-    cout << "2) ������� � 12 �������� (��������+���������+�����)\n";
-    cout << "3) ������� � 16 �������� (��������+���������+�����+�������)\n";
+void task6() {
+    cout << "Выберите уровень сложности пароля:\n";
+    cout << "1) Лёгкий  — 8 символов (только строчные буквы)\n";
+    cout << "2) Средний — 12 символов (строчные+прописные+цифры)\n";
+    cout << "3) Сложный — 16 символов (строчные+прописные+цифры+символы)\n";
     int level;
     if (!(cin >> level)) {
-        cout << "�������� ����\n";
+        cout << "Неверный ввод\n";
         cin.clear();
         cin.ignore(10000, '\n');
         return;
@@ -236,16 +238,16 @@ void task6(string stroka) {
         charset = lowers + uppers + digits + symbols;
         break;
     default:
-        cout << "�������� ������� ���������.\n";
+        cout << "Неверный уровень сложности.\n";
         return;
     }
 
     if (charset.empty()) {
-        cout << "������: ������ ����� ��������.\n";
+        cout << "Ошибка: пустой набор символов.\n";
         return;
     }
 
-    // ������������� ���������� ��������� �����
+    // Инициализация генератора случайных чисел
     string password;
     password.reserve(length);
     int charsetSize = static_cast<int>(charset.length());
@@ -254,9 +256,156 @@ void task6(string stroka) {
         password += charset[idx];
     }
 
-    cout << "��������������� ������: " << password << "\n";
+    cout << "Сгенерированный пароль: " << password << "\n";
 }
 
-void task7(string stroka) {
+bool parseNumber(const std::string& s, int& num, std::string& rest) {
+    if (s.empty()) return false;
+    size_t i = 0;
+    // Пропускаем начальные пробелы
+    while (i < s.size() && std::isspace(static_cast<unsigned char>(s[i]))) ++i;
+    if (i == s.size()) return false;
 
+    // Число должно начинаться с цифры (натуральное → без +/-)
+    if (!std::isdigit(static_cast<unsigned char>(s[i]))) return false;
+
+    size_t start = i;
+    while (i < s.size() && std::isdigit(static_cast<unsigned char>(s[i]))) ++i;
+
+    std::string numStr = s.substr(start, i - start);
+    // Ограничение: не более 3 цифр
+    if (numStr.size() > 3) return false;
+
+    try {
+        num = std::stoi(numStr);
+        if (num < 1 || num > 999) return false; // натуральные ≤ 999
+    }
+    catch (...) {
+        return false;
+    }
+
+    // Остаток строки (после числа)
+    rest = s.substr(i);
+    return true;
+}
+
+void task7() {
+    std::string FN1, FN2;
+    std::cout << "Введите имя входного файла (FN1): ";
+    std::cin >> FN1;
+    std::cout << "Введите имя выходного файла (FN2): ";
+    std::cin >> FN2;
+
+    std::ifstream in(FN1);
+    std::ofstream out(FN2);
+
+    if (!in.is_open()) {
+        std::cerr << "Ошибка: не удалось открыть входной файл \"" << FN1 << "\"\n";
+        return;
+    }
+    if (!out.is_open()) {
+        std::cerr << "Ошибка: не удалось создать выходной файл \"" << FN2 << "\"\n";
+        in.close();
+        return;
+    }
+
+    std::string line;
+    int lineNum = 0;
+
+    while (std::getline(in, line)) {
+        ++lineNum;
+        std::string origLine = line; // для вывода
+
+        // Удалим комментарии и лишнее (оставим только [0-9:*=\s])
+        std::string clean;
+        for (char c : line) {
+            if (std::isdigit(c) || c == '*' || c == ':' || c == '=' || std::isspace(static_cast<unsigned char>(c))) {
+                clean += c;
+            }
+        }
+        if (clean.empty()) {
+            out << line << "\n"; // пустая/комментарий — копируем как есть
+            continue;
+        }
+
+        // ---------- Парсинг: A op B = ans ----------
+        int A = 0, B = 0, ans = 0;
+        char op = 0;
+        std::string rest;
+
+        // 1. Число A
+        if (!parseNumber(clean, A, rest)) {
+            out << line << " !\n"; // некорректный формат → считаем ошибкой
+            continue;
+        }
+
+        // 2. Операция (* или :)
+        while (!rest.empty() && std::isspace(static_cast<unsigned char>(rest[0]))) rest.erase(0, 1);
+        if (rest.empty() || (rest[0] != '*' && rest[0] != ':')) {
+            out << line << " !\n";
+            continue;
+        }
+        op = rest[0];
+        rest = rest.substr(1);
+
+        // 3. Число B
+        if (!parseNumber(rest, B, rest)) {
+            out << line << " !\n";
+            continue;
+        }
+
+        // 4. Знак '='
+        while (!rest.empty() && std::isspace(static_cast<unsigned char>(rest[0]))) rest.erase(0, 1);
+        if (rest.empty() || rest[0] != '=') {
+            out << line << " !\n";
+            continue;
+        }
+        rest = rest.substr(1);
+
+        // 5. Ответ (ans)
+        if (!parseNumber(rest, ans, rest)) {
+            out << line << " !\n";
+            continue;
+        }
+
+        // Проверим, что после ответа — только пробелы/конец
+        while (!rest.empty() && std::isspace(static_cast<unsigned char>(rest[0]))) rest.erase(0, 1);
+        if (!rest.empty()) {
+            out << line << " !\n"; // мусор в конце
+            continue;
+        }
+
+        // ---------- Проверка вычисления ----------
+        bool correct = false;
+
+        if (op == '*') {
+            long long expected = 1LL * A * B;
+            if (expected <= 999999 && expected == ans) { // 999*999 = 998001 — влезает в int, но для надёжности long long
+                correct = true;
+            }
+        }
+        else if (op == ':') {
+            if (B == 0) {
+                correct = false; // хотя по условию B ≥ 1, но на всякий
+            }
+            else if (A % B == 0) {
+                int expected = A / B;
+                if (expected == ans) {
+                    correct = true;
+                }
+            }
+            // если A % B != 0 - деление с остатком - в 3 классе — неверно
+        }
+
+        // ---------- Запись в выходной файл ----------
+        out << line;
+        if (!correct) {
+            out << " !";
+        }
+        out << "\n";
+    }
+
+    in.close();
+    out.close();
+    std::cout << "Проверка завершена. Результат записан в \"" << FN2 << "\".\n";
 }

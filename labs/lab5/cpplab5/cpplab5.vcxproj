@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="file.txt" />
+    <Text Include="FN1.txt" />
     <Text Include="number.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
