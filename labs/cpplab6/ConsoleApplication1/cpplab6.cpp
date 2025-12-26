@@ -4,9 +4,6 @@
 
 using namespace std;
 
-// Прототипы других задач (добавляйте по мере создания)
-void runFitnessCenterTask();
-
 // Функция для выбора задачи
 void showMenu() {
     cout << "=== Меню выбора задач ===\n";

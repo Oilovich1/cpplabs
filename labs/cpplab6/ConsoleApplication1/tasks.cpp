@@ -18,12 +18,11 @@ void setup_console() {
 }
 
 // Задача 1: Фитнесс центр
-// Структура для хранения информации о клиенте
 struct ClientRecord {
-    int month;      // Номер месяца
-    int year;       // Год
-    int clientCode; // Код клиента
-    int duration;   // Продолжительность занятий (в часах)
+    int month;      
+    int year;       
+    int clientCode; 
+    int duration;   
 };
 
 // Функция для проверки и получения корректного значения
@@ -41,8 +40,8 @@ int getValidInput(const string& prompt, int minVal, int maxVal) {
         }
         else {
             cout << "Ошибка: введите целое число. Попробуйте снова.\n";
-            cin.clear(); // Очищаем флаг ошибки
-            cin.ignore(10000, '\n'); // <-- заменили numeric_limits<streamsize>::max() на 10000
+            cin.clear(); 
+            cin.ignore(10000, '\n');
         }
     }
 }
@@ -54,7 +53,7 @@ void runFitnessCenterTask() {
     int N = getValidInput("Введите количество записей: ", 1, 2147483647);
 
     ClientRecord record;
-    ClientRecord maxRecord = { 0, 0, 0, -1 }; // Инициализируем минимальным значением для продолжительности
+    ClientRecord maxRecord = { 0, 0, 0, -1 };
 
     for (int i = 0; i < N; i++) {
         cout << "\nЗапись #" << (i + 1) << ":" << endl;
@@ -63,22 +62,19 @@ void runFitnessCenterTask() {
         record.clientCode = getValidInput("Введите код клиента (10-99): ", 10, 99);
         record.duration = getValidInput("Введите продолжительность занятий (1-30 часов): ", 1, 30);
 
-        // Проверяем, является ли текущая запись "лучшей"
         // 1. Продолжительность больше
         if (record.duration > maxRecord.duration) {
             maxRecord = record;
         }
         // 2. Продолжительность равна, но дата позже
         else if (record.duration == maxRecord.duration) {
-            // Сравниваем даты: сначала по году, потом по месяцу
-            if ((record.year > maxRecord.year) ||
+                if ((record.year > maxRecord.year) ||
                 (record.year == maxRecord.year && record.month > maxRecord.month)) {
                 maxRecord = record;
             }
         }
     }
 
-    // Выводим результат
     cout << "\n=== Результат ===" << endl;
     cout << "Максимальная продолжительность занятий: " << maxRecord.duration << " часов" << endl;
     cout << "Год: " << maxRecord.year << endl;
@@ -86,19 +82,18 @@ void runFitnessCenterTask() {
 }
 
 // Задача 2: Начальная школа
-
 union StudentData {
-    short readingSpeed;     // для 1-го класса (слов в минуту)
-    float testScore;        // для 4-го класса (баллы от 1 до 100)
-    short mathScore;        // для 2-го и 3-го классов (от 1 до 10)
+    short readingSpeed;     // для 1-го класса
+    float testScore;        // для 4-го класса
+    short mathScore;        // для 2-го и 3-го классов 
 };
 
 // Структура для ученика
 struct Student {
     string lastName;
     string firstName;
-    int grade;              // 1, 2, 3 или 4
-    StudentData data;       // зависит от класса
+    int grade;              
+    StudentData data;
 };
 
 // Функция для ввода данных одного ученика
@@ -206,14 +201,12 @@ void runStudentTask() {
         students[i] = inputStudent();
     }
 
-    // Сохранение в файл
     ofstream file("students.txt");
     if (!file.is_open()) {
         cout << "Ошибка: не удалось создать файл students.txt\n";
         return;
     }
 
-    // Заголовок таблицы
     file << left << setw(15) << "Фамилия" << setw(15) << "Имя" << setw(8) << "Класс" << setw(20) << "Данные" << "\n";
     file << string(60, '-') << "\n";
 
@@ -236,7 +229,6 @@ void runStudentTask() {
     file.close();
     cout << "\nДанные успешно сохранены в файл students.txt\n";
 
-    // Чтение и вывод содержимого файла на экран
     ifstream read_file("students.txt");
     if (!read_file.is_open()) {
         cout << "Ошибка: не удалось открыть файл для чтения\n";
@@ -262,7 +254,6 @@ struct Book {
 
 vector<Book> library; // глобальный вектор для хранения книг
 
-// Функция для добавления новой книги
 void addBook() {
     Book newBook;
     cout << "Введите название книги: ";
@@ -280,7 +271,6 @@ void addBook() {
     cout << "Книга добавлена!\n";
 }
 
-// Функция для вывода информации о книге по индексу
 void displayBook(int index) {
     if (index >= 0 && index < static_cast<int>(library.size())) {
         const auto& book = library[index];
@@ -293,7 +283,6 @@ void displayBook(int index) {
     }
 }
 
-// Функция для поиска книги по автору
 void searchByAuthor() {
     string author;
     cout << "Введите имя автора для поиска: ";
@@ -313,7 +302,7 @@ void searchByAuthor() {
     }
 }
 
-// Функция для поиска книг по частичному совпадению заголовка
+
 void searchByTitle() {
     string titlePart;
     cout << "Введите часть названия для поиска: ";
@@ -349,7 +338,7 @@ void editBook() {
     int index;
     cout << "Введите номер книги для редактирования (1-" << library.size() << "): ";
     cin >> index;
-    --index; // преобразуем к 0-based
+    --index;
 
     if (index >= 0 && index < static_cast<int>(library.size())) {
         cout << "Текущая информация:\n";
@@ -406,7 +395,7 @@ void deleteBook() {
     int index;
     cout << "Введите номер книги для удаления (1-" << library.size() << "): ";
     cin >> index;
-    --index; // преобразуем к 0-based
+    --index;
 
     if (index >= 0 && index < static_cast<int>(library.size())) {
         cout << "Вы собираетесь удалить следующую книгу:\n";
@@ -427,7 +416,6 @@ void deleteBook() {
     }
 }
 
-// Функция для вывода всех книг
 void listAllBooks() {
     if (library.empty()) {
         cout << "Библиотека пуста.\n";
