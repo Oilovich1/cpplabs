@@ -28,7 +28,7 @@ void random_str(string& random_string) {
     string russian_alphabet_upper = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ ";
     string english_alphabet_upper = "QWERTYUIOPASDFGHJKLZXCVBNM ";
     int choise;
-    cout << "Выберете алфавит: \n 1)русский\n2)английский";
+    cout << "Выберете алфавит: \n1)русский\n2)английский\n";
     cin >> choise;
     switch (choise) {
     case 1: {
