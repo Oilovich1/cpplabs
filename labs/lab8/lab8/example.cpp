@@ -2,6 +2,7 @@
 #include <locale>
 #include <string>
 #include "backrec10.h"
+#include "HomeDyn4.h"
 
 int main() {
 	setlocale(LC_ALL, "rus");
@@ -18,7 +19,11 @@ int main() {
 			BackRec10(filename);
 		}
 		case 2: {
-
+			std::cout << "Ввдите ввходной и название выходного файлов\n";
+			std::string infile, outfile;
+			std::cin >> infile >> outfile;
+			lameKing(infile, outfile);
+			std::cout << "Решение записано в файл " << outfile << std::endl;
 		}
 		}
 	}

@@ -125,12 +125,15 @@
   <ItemGroup>
     <ClCompile Include="BackRec10cpp.cpp" />
     <ClCompile Include="example.cpp" />
+    <ClCompile Include="HomeDyn4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backrec10.h" />
+    <ClInclude Include="HomeDyn4.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="arkev.txt" />
+    <Text Include="map.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
