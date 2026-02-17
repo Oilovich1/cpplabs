@@ -125,10 +125,12 @@
   <ItemGroup>
     <ClCompile Include="BackRec10cpp.cpp" />
     <ClCompile Include="example.cpp" />
+    <ClCompile Include="HomeDyn16.cpp" />
     <ClCompile Include="HomeDyn4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backrec10.h" />
+    <ClInclude Include="HomeDyn16.h" />
     <ClInclude Include="HomeDyn4.h" />
   </ItemGroup>
   <ItemGroup>

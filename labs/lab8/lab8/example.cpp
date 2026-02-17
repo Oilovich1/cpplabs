@@ -3,6 +3,7 @@
 #include <string>
 #include "backrec10.h"
 #include "HomeDyn4.h"
+#include "HomeDyn16.h"
 
 int main() {
 	setlocale(LC_ALL, "rus");
@@ -24,6 +25,13 @@ int main() {
 			std::cin >> infile >> outfile;
 			lameKing(infile, outfile);
 			std::cout << "Решение записано в файл " << outfile << std::endl;
+		}
+		case 3: {
+			Kichnie();
+			std::cout << std::endl;
+		}
+		default: {
+		std::cout << "Введен неверный номер задачи\n";
 		}
 		}
 	}

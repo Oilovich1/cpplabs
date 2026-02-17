@@ -24,12 +24,18 @@
     <ClCompile Include="HomeDyn4.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="HomeDyn16.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backrec10.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="HomeDyn4.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="HomeDyn16.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
